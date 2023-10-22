@@ -1,2 +1,5 @@
-# gitignore the data folder
+# ignore the data folder
 data/
+
+# ignore the config files
+src/config.py
