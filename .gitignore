@@ -2,4 +2,4 @@
 data/
 
 # ignore the config files
-src/config.py
+config.py

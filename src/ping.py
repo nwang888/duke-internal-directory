@@ -4,10 +4,13 @@ from bs4 import BeautifulSoup
 import os
 import config
 
-PATH = os.environ['CSV_PATH']
-YEAR = os.environ['YEAR']
+DATA_PATH = os.environ['DATA_PATH'] + 'NWangSignatures.csv'
+OUT_PATH = os.environ['DATA_PATH'] + 'out.csv'
+YEARS = os.environ['YEARS'].split(',')
+PROGRAMS = os.environ['PROGRAMS'].split(',')
 
-def get_directory(netid):
+# query the internal directory by netid and returns json
+def get_directory_info(netid):
     url = 'https://directory.duke.edu/directory/search'
     data = {'search': netid}
     response = requests.post(url, data=data, verify=False)
@@ -17,7 +20,6 @@ def get_directory(netid):
 
     # Find the table row containing the result details
     result_detail = soup.find('div', {'class': 'person-data'})
-    # print(result_detail)
 
     # Extract the affiliation
     code_string = result_detail.get_text("\n")
@@ -37,46 +39,30 @@ def get_directory(netid):
             result_dict[key.strip()] = value.strip()
 
     return result_dict
-
-# Read the CSV file and extract the netid column
-with open(PATH, 'r') as f:
+ 
+# Read the CSV file and extract all of the data
+with open(DATA_PATH, 'r', encoding='utf-8-sig') as f:
     reader = csv.DictReader(f)
+    # data = [[c.replace('\ufeff', '') for c in row] for row in reader]
     netids = [row['netID'] for row in reader]
+    # fieldnames = [fieldname.replace('\ufeff', '') for fieldname in reader.fieldnames]
 
-# add a new column to the CSV file if it doesn't exist
-with open(PATH, 'r') as f:
-    reader = csv.DictReader(f)
-    fieldnames = reader.fieldnames
-    if 'Graduation Term' not in fieldnames:
-        fieldnames.append('Graduation Term')
+# write to a new csv file that contains netid and valid
+with open(OUT_PATH, 'w', encoding='utf-8-sig') as f:
+    writer = csv.DictWriter(f, fieldnames=['netID', 'valid'], lineterminator="\n")
+    writer.writeheader()
 
-for netid in netids:
-    directory_details = get_directory(netid)
-    if directory_details['Graduation Term'] != YEAR:
-        print(f'Graduation term does not match for {netid}')
-    else:
-        print(f'Graduation term matches for {netid}')
-
-# def get_streamer_directory(netid):
-#     if not isinstance(netid, str):
-#         netid = str(netid)
-
-#     url = 'https://streamer.oit.duke.edu/ldap/people/netid/' + netid +'?access_token=+' + API_KEY
-#     response = requests.get(url)
-
-#     if response.status_code != 200:
-#         raise Exception('The request did not succeed. Status code: ' + str(response.status_code))
-    
-#     # Parse the JSON content of the response into a dictionary
-#     result_dict = json.loads(response.content)[0]
-#     # Create a dictionary containing the extracted information
-#     result_dict = {
-#         'affiliation': affiliation,
-#         'graduation_term': graduation_term,
-#         'display_name': result_dict['display_name'],
-#         'mail': mail,
-#         'netid': netid,
-#         'program': program
-#     }
-
-#     return result_dict
+    # go through each netid and check if it exists and graduation term matches the year
+    for netid in netids:
+        isValid = True
+        directory_details = get_directory_info(netid)
+        if ('Graduation Term' not in directory_details.keys() or
+            directory_details['Graduation Term'] not in YEARS or
+            'Program' not in directory_details.keys() or
+            directory_details['Program'] not in PROGRAMS):
+            isValid = False
+        if isValid:
+            writer.writerow({'netID': netid, 'valid': 'True'})
+        else:
+            writer.writerow({'netID': netid, 'valid': 'False'})
+    print('done')
