@@ -6,6 +6,8 @@ For example, if you wanted to validate that a netid is a valid Duke student with
 
 ## Getting Started
 
+Create a data folder that contains the csvs that you want to process. As of now, each csv must contain a column named "netid" that contains the netids that you want to verify. You will need to specify the path to this folder in config.py (preferably, this folder should exist in this project directory)
+
 Usage via cli:
 Navigate to the directory in which this project exists.
 Make sure to set config.py to your specified values. The parameters are dictated in the comments of the file.
@@ -14,6 +16,8 @@ Then run the following command:
 ```
 ./pingmultithread.py
 ```
+
+The results will be stored in the data folder that you specified in config.py.
 
 Usage via Google Colab and Google Sheets:
 This will hopefully be supported in the future. It is not functional right now.
