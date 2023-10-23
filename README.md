@@ -1,12 +1,22 @@
 # NetID-Verification
 
-A quick script that is able to verify any one field given from the duke internal directory against the rest of the fields.
+A quick script that is able to verify the netid against the rest of the fields in the duke internal directory.
+
+For example, if you wanted to validate that a netid is a valid Duke student with the graduating term of 2025 Spring, you can use this script to do so.
 
 ## Getting Started
 
 Usage via cli:
+Navigate to the directory in which this project exists.
+Make sure to set config.py to your specified values. The parameters are dictated in the comments of the file.
+Then run the following command:
+
+```
+./pingmultithread.py
+```
 
 Usage via Google Colab and Google Sheets:
+This will hopefully be supported in the future. It is not functional right now.
 
 ## Other Notes
 
