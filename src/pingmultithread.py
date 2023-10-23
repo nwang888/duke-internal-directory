@@ -3,12 +3,11 @@ import csv
 from bs4 import BeautifulSoup
 import os
 import config
+import threading
 
 DATA_PATH = os.environ['DATA_PATH']
 YEARS = os.environ['YEARS'].split(',')
 PROGRAMS = os.environ['PROGRAMS'].split(',')
-
-csv_files = [f for f in os.listdir(DATA_PATH) if f.endswith('.csv') and not f.endswith('OUT.csv')]
 
 # query the internal directory by netid and returns json
 def get_directory_info(netid):
@@ -32,17 +31,8 @@ def get_directory_info(netid):
     for i in range(0, len(lines), 2):
         combined.append(lines[i] + lines[i+1])
 
-    # Create a dictionary containing the key-value pairs
-    result_dict = {}
-    for line in combined:
-        if ':' in line:
-            key, value = line.split(':', 1)
-            result_dict[key.strip()] = value.strip()
-
-    return result_dict
-
-# for each CSV File
-for csv_file in csv_files:
+# Function to process a single CSV file
+def process_csv_file(csv_file):
     # Read the CSV file and extract all of the data
     with open(DATA_PATH + csv_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
@@ -69,3 +59,17 @@ for csv_file in csv_files:
             else:
                 writer.writerow({'netID': netid, 'valid': 'False'})
         print('done')
+
+# Get a list of all CSV files in the folder
+csv_files = [f for f in os.listdir(DATA_PATH) if f.endswith('.csv') and not f.endswith('OUT.csv')]
+
+# Create a thread for each CSV file and run the operation on each file in a separate thread
+threads = []
+for csv_file in csv_files:
+    thread = threading.Thread(target=process_csv_file, args=(csv_file))
+    threads.append(thread)
+    thread.start()
+
+# Wait for all threads to finish
+for thread in threads:
+    thread.join()
