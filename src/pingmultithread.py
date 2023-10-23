@@ -49,7 +49,9 @@ def process_csv_file(csv_file):
         for netid in netids:
             isValid = True
             directory_details = get_directory_info(netid)
-            if ('Graduation Term' not in directory_details.keys() or
+            print(directory_details)
+            if (directory_details == None or
+                'Graduation Term' not in directory_details.keys() or
                 directory_details['Graduation Term'] not in YEARS or
                 'Program' not in directory_details.keys() or
                 directory_details['Program'] not in PROGRAMS):
@@ -62,11 +64,12 @@ def process_csv_file(csv_file):
 
 # Get a list of all CSV files in the folder
 csv_files = [f for f in os.listdir(DATA_PATH) if f.endswith('.csv') and not f.endswith('OUT.csv')]
+print(csv_files)
 
 # Create a thread for each CSV file and run the operation on each file in a separate thread
 threads = []
 for csv_file in csv_files:
-    thread = threading.Thread(target=process_csv_file, args=(csv_file))
+    thread = threading.Thread(target=process_csv_file, args=(csv_file,))
     threads.append(thread)
     thread.start()
 

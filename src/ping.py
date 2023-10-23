@@ -59,7 +59,8 @@ for csv_file in csv_files:
         for netid in netids:
             isValid = True
             directory_details = get_directory_info(netid)
-            if ('Graduation Term' not in directory_details.keys() or
+            if (directory_details == None or
+                'Graduation Term' not in directory_details.keys() or
                 directory_details['Graduation Term'] not in YEARS or
                 'Program' not in directory_details.keys() or
                 directory_details['Program'] not in PROGRAMS):
