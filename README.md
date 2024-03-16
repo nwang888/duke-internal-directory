@@ -2,7 +2,7 @@
 
 A quick script that is able to verify the netid against the rest of the fields in the duke internal directory.
 
-For example, if you wanted to validate that a netid is a valid Duke student with the graduating term of 2025 Spring, you can use this script to do so.
+For example, if you wanted to validate that a netid is a valid Duke student who is in an Engineering Program with the graduating term of 2025 Spring, you can use this script to do so.
 
 ## Getting Started
 
@@ -14,13 +14,20 @@ Make sure to set config.py to your specified values. The parameters are dictated
 Then run the following command:
 
 ```
-./pingmultithread.py
+./ping.py
 ```
 
 The results will be stored in the data folder that you specified in config.py.
 
 Usage via Google Colab and Google Sheets:
 This will hopefully be supported in the future. It is not functional right now.
+
+## Config
+
+Current Options for Config:
+DATA_PATH: The directory of the data folder that contains the csvs that you want to process.
+YEARS: i.e. '2025 Fall', '2025 Spring' etc... Please use the format 'YYYY Term' for each eyar that you want to filter by. If you do not want to filter by year, set this to an empty list.
+PROGRAMS: i.e. 'E-UGD', 'A&S' etc... Please use the full name of the program as it appears in the directory. If you do not want to filter by program, set this to an empty list.
 
 ## Other Notes
 
