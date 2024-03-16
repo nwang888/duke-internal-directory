@@ -45,3 +45,5 @@ PROGRAMS: i.e. 'E-UGD', 'A&S' etc... Please use the full name of the program as 
 If you do not require filtering by year, it may be faster to run a script based on the [Duke OIT streamer API](https://streamer.oit.duke.edu/dev_console) directly. This script instead queries the internal directory specifically, because the streamer API does not contain graduation term.
 
 Additionally, the authentication for usage of the internal directory API relies on connection to the DukeBlue network. If you are not connected to the DukeBlue network, you will need to use a VPN to connect to the DukeBlue network.
+
+Alternatively, you can use the [LDAP Batch Request Tool](https://idm.oit.duke.edu/tools/ldap) and then filter the spreadsheet.
