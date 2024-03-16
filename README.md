@@ -19,6 +19,12 @@ Then run the following command:
 
 The results will be stored in the data folder that you specified in config.py.
 
+You can also directly run the script with the parameters:
+
+```
+python ping.py --DATA_PATH /path/to/data --YEARS 2025 Sprng,2024 Fall --PROGRAMS E-UGD,A&S
+```
+
 Usage via Google Colab and Google Sheets:
 This will hopefully be supported in the future. It is not functional right now.
 
