@@ -33,8 +33,11 @@ This will hopefully be supported in the future. It is not functional right now.
 ## Config
 
 Current Options for Config:
+
 DATA_PATH: The directory of the data folder that contains the csvs that you want to process.
+
 YEARS: i.e. '2025 Fall','2025 Spring' etc... Please use the format 'YYYY Term' for each eyar that you want to filter by. If you do not want to filter by year, set this to an empty list. Make sure to leave no spaces between the commas.
+
 PROGRAMS: i.e. 'E-UGD', 'A&S' etc... Please use the full name of the program as it appears in the directory. If you do not want to filter by program, set this to an empty list. (Note. Starting with Class of 2027 they begin using A&SU for Arts and Sciences Undeclared)
 
 ## Other Notes
